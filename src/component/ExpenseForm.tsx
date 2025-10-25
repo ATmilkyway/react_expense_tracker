@@ -1,31 +1,65 @@
-const ExpenseForm = () => {
+import { useForm } from "react-hook-form";
+import type { FormData } from "../App";
+
+interface Props {
+  // FormData: FormData;
+  category: string[];
+  handleOnSubmit: (data: FormData) => void;
+}
+const ExpenseForm = ({ handleOnSubmit, category }: Props) => {
+  const { register, handleSubmit, reset } = useForm<FormData>();
+
   return (
     <>
-      <form>
+      <form
+        onSubmit={handleSubmit((data: FormData) => {
+          handleOnSubmit(data);
+          reset();
+        })}
+      >
         <div className="mb-3">
-          <label htmlFor="desc" className="form-label ">
+          <label htmlFor="description" className="form-label">
             Description
           </label>
-          <input type="email" className="form-control" id="desc" />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">
-            Amount
-          </label>
           <input
-            type="number"
+            {...register("description")}
+            type="text"
             className="form-control"
-            id="exampleInputPassword1"
+            aria-label="Default select example"
+            id="description"
+            autoComplete="off"
           />
         </div>
         <div className="mb-3">
-          <label className="form-label" htmlFor="exampleCheck1">
+          <label htmlFor="amount" className="form-label">
+            Amount
+          </label>
+          <input
+            {...register("amount")}
+            type="number"
+            className="form-control"
+            aria-label="Default select example"
+            id="amount"
+            autoComplete="off"
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label" htmlFor="category">
             Category
           </label>
-          <select className="form-select" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option> 
+          <select
+            {...register("category")}
+            className="form-select"
+            aria-label="Default select example"
+            id="category"
+            autoComplete="off"
+          >
+            <option>Select</option>
+            {category.map((c, i) => (
+              <option key={i} value={category[i]}>
+                {c}
+              </option>
+            ))}
           </select>
         </div>
         <button type="submit" className="btn btn-primary">
