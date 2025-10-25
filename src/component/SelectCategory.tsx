@@ -11,6 +11,7 @@ const SelectCategory = () => {
           id="category"
           autoComplete="off"
         >
+          <option value="1">All Category</option>
           <option value="1">Groceries</option>
           <option value="2">Utilities</option>
           <option value="2">Entertainment</option>
