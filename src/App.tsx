@@ -1,9 +1,13 @@
-import Form from "./component/Form";
+import ExpenseForm from "./component/ExpenseForm";
+import { NavBar } from "./component/NavBar";
 
 const App = () => {
   return (
     <div>
-      <Form />
+      <NavBar />
+      <div className="p-5">
+        <ExpenseForm />
+      </div>
     </div>
   );
 };
