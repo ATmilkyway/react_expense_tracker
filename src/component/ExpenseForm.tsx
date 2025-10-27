@@ -1,59 +1,35 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import z from "zod";
 
 const schema = z.object({
   description: z
-    .string({
-      error: (issue) =>
-        issue.input === undefined
-          ? "Description is required"
-          : "Description must be a string",
-    })
-    .min(3, { error: "Description must be at least 3 characters" }),
-
-  amount: z
-    .number({
-      error: (issue) =>
-        issue.input === undefined
-          ? "Amount is required"
-          : "Enter a valid number",
-    })
-    .min(1, { error: "Amount must be greater than 0" }),
-
-  category: z.string({
-    error: (issue) =>
-      issue.input === undefined ? "Category is required" : "Invalid category",
-  }),
+    .string()
+    .min(3, { error: "Description Should be at least 3 characters" }),
+  amount: z.number({ error: "Amount is Required" }),
+  category: z.string().min(1, "Category is required"),
 });
 
 type FormData = z.infer<typeof schema>;
 
-interface Props {
-  // FormData: FormData;
-  category: string[];
-  handleOnSubmit: (data: FormData) => void;
-}
-const ExpenseForm = ({ handleOnSubmit, category }: Props) => {
+const ExpenseForm = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    if (data) {
-      handleOnSubmit(data);
-      reset();
-    }
-  };
+  const expenseList: string[] = ["", "Groceries", "Utilities", "Entertainment"];
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div>
+      <form
+        onSubmit={handleSubmit((data) => {
+          console.log(data);
+        })}
+      >
         <div className="mb-3">
           <label htmlFor="description" className="form-label">
             Description
@@ -62,13 +38,12 @@ const ExpenseForm = ({ handleOnSubmit, category }: Props) => {
             {...register("description")}
             type="text"
             className="form-control"
-            aria-label="Default select example"
             id="description"
-            autoComplete="off"
+            aria-describedby="emailHelp"
           />
-          {errors.description?.message && (
-            <p className="text-danger">{errors.description?.message}</p>
-          )}
+          <div id="emailHelp" className="form-text text-danger">
+            {errors.description?.message}
+          </div>
         </div>
         <div className="mb-3">
           <label htmlFor="amount" className="form-label">
@@ -78,16 +53,15 @@ const ExpenseForm = ({ handleOnSubmit, category }: Props) => {
             {...register("amount", { valueAsNumber: true })}
             type="number"
             className="form-control"
-            aria-label="Default select example"
             id="amount"
-            autoComplete="off"
           />
-          {errors.amount?.message && (
-            <p className="text-danger">{errors.amount?.message}</p>
-          )}
+          <div id="emailHelp" className="form-text text-danger">
+            {errors.amount?.message}
+          </div>
         </div>
+
         <div className="mb-3">
-          <label className="form-label" htmlFor="category">
+          <label htmlFor="category" className="form-label">
             Category
           </label>
           <select
@@ -95,26 +69,23 @@ const ExpenseForm = ({ handleOnSubmit, category }: Props) => {
             className="form-select"
             aria-label="Default select example"
             id="category"
-            autoComplete="off"
           >
-            <option>Select</option>
-            {category.map((c, i) => (
-              <option key={i} value={category[i]}>
-                {c}
+            {expenseList.map((expense, index) => (
+              <option key={index} value={expense}>
+                {expense === "" ? "Select a category" : expense}
               </option>
             ))}
           </select>
-          {errors.category?.message && (
-            <p className="text-danger">{errors.category?.message}</p>
-          )}
         </div>
-        <button type="submit" className="btn btn-primary">
+        <div id="emailHelp" className="form-text text-danger">
+          {errors.category?.message}
+        </div>
+        <button type="submit" className="btn btn-primary mt-3">
           Submit
         </button>
       </form>
-    </>
+    </div>
   );
 };
 
 export default ExpenseForm;
-// disabled={!isValid}
