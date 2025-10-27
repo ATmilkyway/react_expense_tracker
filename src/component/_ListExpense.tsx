@@ -1,29 +1,28 @@
-import type { FormData } from "./ExpenseForm";
+import type { FormData } from "../App";
 
 interface Props {
   expenses: FormData[];
 }
-
 const ListExpense = ({ expenses }: Props) => {
   return (
-    <>
+    <div>
       <table className="table">
         <thead>
           <tr>
             <th scope="col">Description</th>
             <th scope="col">Amount</th>
             <th scope="col">Category</th>
-            <th scope="col"> </th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense, index) => (
-            <tr key={index}>
-              <td scope="row">{expense.description}</td>
-              <td scope="row">{expense.amount}</td>
-              <td scope="row">{expense.category}</td>
+          {expenses.map((e, index) => (
+            <tr>
+              <td>{e.description}</td>
+              <td>{e.amount}</td>
+              <td>{e.category}</td>
               <td>
-                <button type="button" className="btn btn-outline-danger">
+                <button type="button" className="btn btn-danger">
                   Delete
                 </button>
               </td>
@@ -31,7 +30,7 @@ const ListExpense = ({ expenses }: Props) => {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

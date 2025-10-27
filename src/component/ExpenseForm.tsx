@@ -10,13 +10,17 @@ const schema = z.object({
   category: z.string().min(1, "Category is required"),
 });
 
-type FormData = z.infer<typeof schema>;
+export type FormData = z.infer<typeof schema>;
 
-const ExpenseForm = () => {
+interface Props {
+  handleAddExpense: (data: FormData) => void;
+}
+const ExpenseForm = ({ handleAddExpense }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
@@ -27,7 +31,8 @@ const ExpenseForm = () => {
     <div>
       <form
         onSubmit={handleSubmit((data) => {
-          console.log(data);
+          handleAddExpense(data);
+          reset();
         })}
       >
         <div className="mb-3">
@@ -40,6 +45,7 @@ const ExpenseForm = () => {
             className="form-control"
             id="description"
             aria-describedby="emailHelp"
+            autoComplete="off"
           />
           <div id="emailHelp" className="form-text text-danger">
             {errors.description?.message}
@@ -54,6 +60,7 @@ const ExpenseForm = () => {
             type="number"
             className="form-control"
             id="amount"
+            autoComplete="off"
           />
           <div id="emailHelp" className="form-text text-danger">
             {errors.amount?.message}
