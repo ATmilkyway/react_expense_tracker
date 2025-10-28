@@ -1,10 +1,11 @@
 import type { FormData } from "./ExpenseForm";
 
 interface Props {
+  handleExpense: (index: number) => void;
   expenses: FormData[];
 }
 
-const ListExpense = ({ expenses }: Props) => {
+const ListExpense = ({ handleExpense, expenses }: Props) => {
   return (
     <>
       <table className="table">
@@ -23,7 +24,13 @@ const ListExpense = ({ expenses }: Props) => {
               <td scope="row">{expense.amount}</td>
               <td scope="row">{expense.category}</td>
               <td>
-                <button type="button" className="btn btn-outline-danger">
+                <button
+                  type="button"
+                  className="btn btn-outline-danger"
+                  onClick={() => {
+                    handleExpense(index);
+                  }}
+                >
                   Delete
                 </button>
               </td>

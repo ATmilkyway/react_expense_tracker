@@ -85,7 +85,11 @@ const ExpenseForm = ({ handleAddExpense, expenseCategoryList }: Props) => {
         <div id="emailHelp" className="form-text text-danger">
           {errors.category?.message}
         </div>
-        <button type="submit" className="btn btn-primary mt-3">
+        <button
+          disabled={!isValid}
+          type="submit"
+          className="btn btn-primary mt-3"
+        >
           Submit
         </button>
       </form>

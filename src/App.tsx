@@ -6,13 +6,13 @@ import ListExpense from "./component/ListExpense";
 
 const App = () => {
   const [expenses, setExpenses] = useState<FormData[]>([
-    // {
-    //   description: "Description 1",
-    //   amount: 1,
-    //   category: "Category 1",
-    // },
+    {
+      description: "Description 1",
+      amount: 1,
+      category: "Category 1",
+    },
   ]);
-   const [filtered, setFiltered] = useState<FormData[]>([]);
+  const [filtered, setFiltered] = useState<FormData[]>([]);
 
   const expenseCategoryList: string[] = [
     "",
@@ -37,6 +37,10 @@ const App = () => {
     setFiltered(expenses.filter((expense) => expense.category === category));
   };
 
+  const handleExpense = (indexToRemove: number) => {
+    setExpenses(expenses.filter((_, idx) => idx !== indexToRemove));
+  };
+
   return (
     <div>
       <NavBar />
@@ -50,7 +54,7 @@ const App = () => {
           expenseCategoryList={expenseCategoryList}
           handleSelectCategory={handleSelectCategory}
         />
-        <ListExpense expenses={filtered} />
+        <ListExpense expenses={filtered} handleExpense={handleExpense} />
       </div>
     </div>
   );
