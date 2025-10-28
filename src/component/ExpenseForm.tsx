@@ -13,9 +13,10 @@ const schema = z.object({
 export type FormData = z.infer<typeof schema>;
 
 interface Props {
+  expenseCategoryList: string[];
   handleAddExpense: (data: FormData) => void;
 }
-const ExpenseForm = ({ handleAddExpense }: Props) => {
+const ExpenseForm = ({ handleAddExpense, expenseCategoryList }: Props) => {
   const {
     register,
     handleSubmit,
@@ -24,9 +25,6 @@ const ExpenseForm = ({ handleAddExpense }: Props) => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-
-  const expenseList: string[] = ["", "Groceries", "Utilities", "Entertainment"];
-
   return (
     <div>
       <form
@@ -77,9 +75,9 @@ const ExpenseForm = ({ handleAddExpense }: Props) => {
             aria-label="Default select example"
             id="category"
           >
-            {expenseList.map((expense, index) => (
-              <option key={index} value={expense}>
-                {expense === "" ? "Select a category" : expense}
+            {expenseCategoryList.map((category, index) => (
+              <option key={index} value={category}>
+                {category === "" ? "Select a category" : category}
               </option>
             ))}
           </select>

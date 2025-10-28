@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ExpenseForm, { type FormData } from "./component/ExpenseForm";
 import ListCategory from "./component/ListCategory";
 import NavBar from "./component/NavBar";
@@ -12,20 +12,45 @@ const App = () => {
     //   category: "Category 1",
     // },
   ]);
+   const [filtered, setFiltered] = useState<FormData[]>([]);
+
+  const expenseCategoryList: string[] = [
+    "",
+    "Groceries",
+    "Utilities",
+    "Entertainment",
+  ];
+
+  useEffect(() => {
+    setFiltered([...expenses]);
+  }, [expenses]);
 
   const handleAddExpense = (data: FormData) => {
     console.log(data);
     setExpenses([...expenses, data]);
   };
+  const handleSelectCategory = (category: string) => {
+    if (category === "") {
+      setFiltered([...expenses]);
+      return;
+    }
+    setFiltered(expenses.filter((expense) => expense.category === category));
+  };
+
   return (
     <div>
       <NavBar />
       <div className="p-5">
-        <ExpenseForm handleAddExpense={handleAddExpense} />
+        <ExpenseForm
+          expenseCategoryList={expenseCategoryList}
+          handleAddExpense={handleAddExpense}
+        />
         <div className="mb-5"></div>
-        <ListCategory />
-
-        <ListExpense expenses={expenses} />
+        <ListCategory
+          expenseCategoryList={expenseCategoryList}
+          handleSelectCategory={handleSelectCategory}
+        />
+        <ListExpense expenses={filtered} />
       </div>
     </div>
   );
