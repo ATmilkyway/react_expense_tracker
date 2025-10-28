@@ -11,6 +11,11 @@ const App = () => {
       amount: 1,
       category: "Category 1",
     },
+    {
+      description: "Description 1",
+      amount: 1,
+      category: "Category 1",
+    },
   ]);
   const [filtered, setFiltered] = useState<FormData[]>([]);
 

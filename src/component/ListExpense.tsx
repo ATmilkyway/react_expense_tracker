@@ -6,6 +6,8 @@ interface Props {
 }
 
 const ListExpense = ({ handleExpense, expenses }: Props) => {
+  const total = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+
   return (
     <>
       <table className="table">
@@ -36,6 +38,17 @@ const ListExpense = ({ handleExpense, expenses }: Props) => {
               </td>
             </tr>
           ))}
+          {expenses.length && (
+            <tr>
+              <td scope="row">
+                <strong>Total</strong>
+              </td>
+              <td scope="row">
+                <strong>${total.toFixed(2)}</strong>
+              </td>
+              <td colSpan={2}></td>
+            </tr>
+          )}
         </tbody>
       </table>
     </>
